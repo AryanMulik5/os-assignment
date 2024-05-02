@@ -1,0 +1,56 @@
+# if statement
+a=10
+b=20
+if [ $a == $b ]
+then
+	echo "a is equal to b"
+fi
+if [ $a != $b ]
+then
+	echo "a is not equal to b"
+fi
+
+# if-else statement
+a=20 
+b=20  
+if [ $a == $b ] 
+then 
+    echo "a is equal to b"
+else
+    echo "a is not equal to b"
+fi 
+
+# if..elif..else..fi statement (Else If ladder)
+echo "Enter the mark"
+read mark
+if (( $mark >= 90 )); then
+echo "Grade - A+"
+elif (( $mark < 90 && $mark >= 80 )); then
+echo "Grade - A"
+elif (( $mark < 80 && $mark >= 70 )); then
+echo "Grade - B+"
+elif (( $mark < 70 && $mark >= 60 )); then
+echo "Grade - C+"
+else
+echo "Grade - F"
+fi
+# if..then..else..if..then..fi..fi..(Nested if) 
+echo "Enter the sales amount"
+read amount
+echo "Enter the time duration"
+read duration
+ 
+if (( $amount >= 10000 )); then
+if (( $duration <= 7 )); then
+output="You will get 20% bonus"
+else
+output="You will get 15% bonus"
+fi
+else
+if (( $duration <= 10 )); then
+output="You will get 10% bonus"
+else
+output="You will get 5% bonus"
+fi
+fi
+echo "$output"
