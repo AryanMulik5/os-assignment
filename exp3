@@ -1,0 +1,59 @@
+#compare two strings
+echo "Enter the first word: "
+read str1
+echo "Enter the second word: "
+read str2
+
+if [ "$str1" == "$str2" ] ;
+then
+	echo "Strings are equal"
+else
+	echo "Strings are not equal"
+fi
+
+#concatenation
+concat=$str1$str2
+echo "The concatenated string is $concat "
+
+#finding the length of a string
+length=`expr length "$concat"`
+echo "The Length of the string is $length"
+
+#Printing the characters at odd positions
+length1=`expr length "$str2"`
+for((i=0;i<length;i+=2))
+do
+	echo "${str2:i:1}"
+done
+
+# To Print reverse of the string
+reverse=""
+for((i=length-1;i>=0;i--))
+do
+	reverse="$reverse${str2:i:1}"
+done
+echo "Reversed string is $reverse"
+
+#Chech if the string is Palindrome or not
+echo "Enter the word: "
+read str
+reverse=""
+for((i=length-1;i>=0;i--))
+do
+	reverse="$reverse${str2:i:1}"
+done
+if [ "$str" == "$reverse" ] ;
+then
+	echo "It is a palindrome word"
+else
+	echo "It is not a palindrome word"
+fi
+
+#Occurence of the character in the string
+echo "Enter the string:"
+read st
+echo "Enter the char you want to search for: "
+read char
+#use grep to find the occurence
+count=`echo $st| grep -o "$char" | wc -l`
+echo "The character '$char' appears $count times int the string"
