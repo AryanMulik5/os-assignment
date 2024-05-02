@@ -1,0 +1,43 @@
+# Arithmetic Operation
+echo "First Number: "
+read n1
+echo "Second Number: "
+read n2
+echo "Addition: $(expr $n1 + $n2)"
+echo "Subtraction: $(expr $n1 - $n2)"
+echo "Multiplication: $(expr $n1 \* $n2)"
+echo "Division: $(expr $n1 / $n2)"
+echo ""
+
+# Area and Perimeter of Circle
+echo "Enter the radius of Circle: "
+read r
+area=$(echo "3.14 * $r * $r" | bc)
+peri=$(echo "2 * 3.14 * $r" | bc)
+echo "Area of Circle: $area"
+echo "Perimeter of Circle: $peri"
+echo ""
+
+# Employee Salary, DA and HRA
+echo "Enter the basic salary:"
+read bsal
+
+# Calculate DA
+da=$(echo "$bsal * 00165" | bc)
+
+# Calculate HRA
+hra=$(echo "$bsal * 0.003" | bc)
+
+# Calculate gross salary
+gross_sal=$(echo "$bsal + $da + $hra" | bc)
+echo "Gross Salary: $gross_sal"
+echo ""
+
+# Mean Salary
+basic_salary_A=1200
+basic_salary_B=1400
+basic_salary_C=1350
+basic_salary_D=1800
+
+mean_salary=$(echo "($basic_salary_A + $basic_salary_B + $basic_salary_C + $basic_salary_D) / 4" | bc)
+echo "Mean salary : $mean_salary"
