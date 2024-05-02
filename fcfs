@@ -1,0 +1,92 @@
+#include <stdio.h>
+
+// Structure to represent a process
+typedef struct {
+    int process_id;
+    int arrival_time;
+    int burst_time;
+    int start_time;
+    int completion_time;
+    int turnaround_time;
+    int waiting_time;
+} Process;
+
+// Calculate completion, turnaround, and waiting times for FCFS scheduling
+void calculateTimes(Process processes[], int n) {
+    int current_time = 0;
+	int i;
+    for (i = 0; i < n; i++) {
+        Process *p = &processes[i];
+        
+        if (current_time < p->arrival_time) {
+            // If the CPU is idle, advance to the next process's arrival time
+            current_time = p->arrival_time;
+        }
+        
+        // Set the start time for the process
+        p->start_time = current_time;
+
+        // Set the completion time for the process
+        p->completion_time = p->start_time + p->burst_time;
+
+        // Calculate turnaround time (completion time - arrival time)
+        p->turnaround_time = p->completion_time - p->arrival_time;
+
+        // Calculate waiting time (turnaround time - burst time)
+        p->waiting_time = p->turnaround_time - p->burst_time;
+
+        // Advance the current time to the completion time
+        current_time = p->completion_time;
+    }
+}
+
+// Print process information, including waiting and turnaround times
+void printProcessInfo(Process processes[], int n) {
+    printf("Process ID | Arrival Time | Burst Time | Start Time | Completion Time | Turnaround Time | Waiting Time\n");
+    printf("-----------|--------------|------------|------------|-----------------|-----------------|-------------\n");
+    int i;
+    for (i = 0; i < n; i++) {
+        Process *p = &processes[i];
+        printf("    %d      |      %d       |     %d     |     %d     |       %d        |       %d        |      %d    \n",
+               p->process_id, p->arrival_time, p->burst_time, p->start_time, p->completion_time,
+               p->turnaround_time, p->waiting_time);
+    }
+}
+
+// Calculate and print average waiting time and turnaround time
+void calculateAndPrintAverages(Process processes[], int n) {
+    int total_waiting_time = 0;
+    int total_turnaround_time = 0;
+	int i;
+    for (i = 0; i < n; i++) {
+        total_waiting_time += processes[i].waiting_time;
+        total_turnaround_time += processes[i].turnaround_time;
+    }
+
+    float avg_waiting_time = (float)total_waiting_time / n;
+    float avg_turnaround_time = (float)total_turnaround_time / n;
+
+    printf("\nAverage Waiting Time: %.2f\n", avg_waiting_time);
+    printf("Average Turnaround Time: %.2f\n", avg_turnaround_time);
+}
+
+int main() {
+    int n;
+
+    printf("Enter the number of processes: ");
+    scanf("%d", &n);
+
+    Process processes[n];
+	int i;
+    for (i = 0; i < n; i++) {
+        printf("Enter arrival time and burst time for process %d: ", i + 1);
+        processes[i].process_id = i + 1;
+        scanf("%d %d", &processes[i].arrival_time, &processes[i].burst_time);
+    }
+
+    calculateTimes(processes, n);  // Calculate times for each process
+    printProcessInfo(processes, n);  // Display detailed process information
+    calculateAndPrintAverages(processes, n);  // Display average times
+
+    return 0;
+}
