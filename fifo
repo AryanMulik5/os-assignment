@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+int main() {
+    int n, frames;
+    // Ask the user for the number of pages
+    printf("Enter the number of pages: ");
+    scanf("%d", &n);
+    // Define the reference string of pages based on user input
+    int rs[n];
+    printf("Enter the reference string : ");
+    int i;
+    for (i = 0; i < n; i++) {
+        scanf("%d", &rs[i]);
+    }
+    // Ask the user for the number of frames
+    printf("Enter the number of frames: ");
+    scanf("%d", &frames);
+    int pageFaults = 0;
+    int pageHits = 0;
+    int temp[frames];
+    // Initialize the frames to -1
+    for (i = 0; i < frames; i++) {
+        temp[i] = -1;
+    }
+    // Print the dynamic header for frames
+    printf("Reference string");
+    for (i = 0; i < frames; i++) {
+        printf("\t  Frame %d", i + 1);
+    }
+    printf("\n");
+    // Simulate the FIFO page replacement algorithm
+    int currentFrame = 0;
+    for (i = 0; i < n; i++) {
+        int page = rs[i];
+        int found = 0;
+
+        // Check if the page is already in the frames (page hit)
+        int j;
+        for (j = 0; j < frames; j++) {
+            if (temp[j] == page) {
+                pageHits++; // Page hit
+                found = 1;
+                break;
+            }
+        }
+        // If it's not found, it's a page fault
+        if (!found) {
+            pageFaults++;
+            temp[currentFrame] = page; // Replace the page
+            currentFrame = (currentFrame + 1) % frames; // Move to the next frame
+        }
+        // Display the current frames
+        printf("\t%d\t\t", page);
+        for (j = 0; j < frames; j++) {
+            if (temp[j] != -1) {
+                printf("   %d\t\t", temp[j]);
+            } else {
+                printf("   -\t\t");
+            }
+        }
+        printf("\n");
+    }
+    // Output the total page faults and page hits
+    printf("\nTotal Page Faults: %d", pageFaults);   
+    printf("\nTotal Page Hits: %d", pageHits);
+
+}
