@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX_FRAMES 100
+
+// Function to find the optimal frame to replace based on future use
+int findOptimal(int frames[], int rs[], int current_index, int frame_count, int rs_length) {
+    int farthest = current_index;  // Variable to store the farthest use
+    int replace_index = -1;        // Index of the frame to replace
+	int i;
+    for (i = 0; i < frame_count; i++) {
+        int j;
+        for (j = current_index; j < rs_length; j++) {
+            if (frames[i] == rs[j]) {
+                // Find the farthest index
+                if (j > farthest) {
+                    farthest = j;
+                    replace_index = i;
+                }
+                break;
+            }
+        }
+        if (j == rs_length) {
+            // If a frame's page is never used again, replace it
+            return i;
+        }
+    }
+    return replace_index;  // Return the index to replace
+}
+
+int main() {
+    int n, frames,i;
+    printf("Enter the number of pages: ");
+    scanf("%d", &n);
+
+    int rs[n];  // Reference string of pages
+    printf("Enter the reference string: ");
+    for (i = 0; i < n; i++) {
+        scanf("%d", &rs[i]);
+    }
+
+    printf("Enter the number of frames: ");
+    scanf("%d", &frames);
+
+    int frame[frames];  // Array to represent the frames
+    for (i = 0; i < frames; i++) {
+        frame[i] = -1;  // Initialize frames as empty
+    }
+
+    int pageFaults = 0;
+    int pageHits = 0;
+
+    printf("Reference string");
+    for (i = 0; i < frames; i++) {
+        printf("\t  Frame %d", i + 1);
+    }
+    printf("\n");
+
+    // Simulate the optimal page replacement algorithm
+    for (i = 0; i < n; i++) {
+        bool found = false;
+        int j;
+        for (j = 0; j < frames; j++) {
+            if (frame[j] == rs[i]) {
+                pageHits++;  // Page hit
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            pageFaults++;
+            if (i < frames) {
+                frame[i] = rs[i];  // If frame isn't full, add the page
+            } else {
+                int optimal_index = findOptimal(frame, rs, i + 1, frames, n);
+                frame[optimal_index] = rs[i];  // Replace with the optimal choice
+            }
+        }
+
+        printf("\t%d\t\t", rs[i]);
+        for (j = 0; j < frames; j++) {
+            if (frame[j] != -1) {
+                printf("   %d\t\t", frame[j]);
+            } else {
+                printf("   -\t\t");
+            }
+        }
+        printf("\n");
+    }
+
+    printf("\nTotal Page Faults: %d", pageFaults);   
+    printf("\nTotal Page Hits: %d", pageHits);
+
+    return 0;
+}
